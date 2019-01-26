@@ -68,8 +68,7 @@ class AppleHelpBuilder(StandaloneHTMLBuilder):
     # don't generate the search index or include the search page
     search = False
 
-    def init(self):
-        # type: () -> None
+    def init(self) -> None:
         super().init()
         # the output files for HTML help must be .html only
         self.out_suffix = '.html'
@@ -79,23 +78,21 @@ class AppleHelpBuilder(StandaloneHTMLBuilder):
             raise SphinxError(__('You must set applehelp_bundle_id before '
                                  'building Apple Help output'))
 
-        self.bundle_path = path.join(self.outdir,
+        self.bundle_path = path.join(self.outdir,  # type: ignore
                                      self.config.applehelp_bundle_name + '.help')
         self.outdir = path.join(self.bundle_path,
                                 'Contents',
                                 'Resources',
                                 self.config.applehelp_locale + '.lproj')
 
-    def handle_finish(self):
-        # type: () -> None
+    def handle_finish(self) -> None:
         super().handle_finish()
 
         self.finish_tasks.add_task(self.copy_localized_files)
         self.finish_tasks.add_task(self.build_helpbook)
 
     @progress_message(__('copying localized files'))
-    def copy_localized_files(self):
-        # type: () -> None
+    def copy_localized_files(self) -> None:
         source_dir = path.join(self.confdir, self.config.applehelp_locale + '.lproj')
         target_dir = self.outdir
 
@@ -104,8 +101,7 @@ class AppleHelpBuilder(StandaloneHTMLBuilder):
             copy_asset(source_dir, target_dir, excluded,
                        context=self.globalcontext, renderer=self.templates)
 
-    def build_helpbook(self):
-        # type: () -> None
+    def build_helpbook(self) -> None:
         contents_dir = path.join(self.bundle_path, 'Contents')
         resources_dir = path.join(contents_dir, 'Resources')
         language_dir = path.join(resources_dir,
@@ -121,8 +117,7 @@ class AppleHelpBuilder(StandaloneHTMLBuilder):
             self.do_codesign()
 
     @progress_message(__('writing Info.plist'))
-    def build_info_plist(self, contents_dir):
-        # type: (str) -> None
+    def build_info_plist(self, contents_dir: str) -> None:
         """Construct the Info.plist file."""
         info_plist = {
             'CFBundleDevelopmentRegion': self.config.applehelp_dev_region,
@@ -152,8 +147,7 @@ class AppleHelpBuilder(StandaloneHTMLBuilder):
         with open(path.join(contents_dir, 'Info.plist'), 'wb') as f:
             plistlib.dump(info_plist, f)
 
-    def copy_applehelp_icon(self, resources_dir):
-        # type: (str) -> None
+    def copy_applehelp_icon(self, resources_dir: str) -> None:
         """Copy the icon, if one is supplied."""
         if self.config.applehelp_icon:
 
@@ -165,8 +159,7 @@ class AppleHelpBuilder(StandaloneHTMLBuilder):
                 logger.warning(__('cannot copy icon file %r: %s'), applehelp_icon, err)
 
     @progress_message(__('building access page'))
-    def build_access_page(self, language_dir):
-        # type: (str) -> None
+    def build_access_page(self, language_dir: str) -> None:
         """Build the access page."""
         context = {
             'toc': self.config.master_doc + self.out_suffix,
@@ -175,8 +168,7 @@ class AppleHelpBuilder(StandaloneHTMLBuilder):
         copy_asset_file(path.join(template_dir, '_access.html_t'), language_dir, context)
 
     @progress_message(__('generating help index'))
-    def build_helpindex(self, language_dir):
-        # type: (str) -> None
+    def build_helpindex(self, language_dir: str) -> None:
         """Generate the help index."""
         args = [
             self.config.applehelp_indexer_path,
@@ -209,8 +201,7 @@ class AppleHelpBuilder(StandaloneHTMLBuilder):
                 raise AppleHelpIndexerFailed(exc.stdout)
 
     @progress_message(__('signing help book'))
-    def do_codesign(self):
-        # type: () -> None
+    def do_codesign(self) -> None:
         """If we've been asked to, sign the bundle."""
         args = [
             self.config.applehelp_codesign_path,
