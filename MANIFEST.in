@@ -4,4 +4,6 @@ include CHANGES
 
 include tox.ini
 
+recursive-include sphinxcontrib/applehelp/templates *
+recursive-include sphinxcontrib/applehelp/locales *
 recursive-include tests *

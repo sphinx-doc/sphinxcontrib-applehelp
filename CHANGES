@@ -1,3 +1,8 @@
+Release 1.0.1 (2019-02-15)
+==========================
+
+* Fix release package does not contain templates and locale files
+
 Release 1.0.0 (2019-02-06)
 ==========================
 
