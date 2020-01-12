@@ -9,9 +9,12 @@ sphinxcontrib-applehelp is a sphinx extension which outputs Apple help books
 extras_require = {
     'test': [
         'pytest',
+    ],
+    'lint': [
         'flake8',
         'mypy',
-    ],
+        'docutils-stubs',
+    ]
 }
 
 
