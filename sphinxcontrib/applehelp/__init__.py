@@ -93,7 +93,7 @@ class AppleHelpBuilder(StandaloneHTMLBuilder):
 
     @progress_message(__('copying localized files'))
     def copy_localized_files(self) -> None:
-        source_dir = path.join(self.confdir, self.config.applehelp_locale + '.lproj')
+        source_dir = path.join(self.confdir, self.config.applehelp_locale + '.lproj')  # type: ignore  # NOQA
         target_dir = self.outdir
 
         if path.isdir(source_dir):
