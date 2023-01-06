@@ -21,7 +21,8 @@ from sphinx.builders.html import StandaloneHTMLBuilder
 from sphinx.errors import SphinxError
 from sphinx.locale import get_translation
 from sphinx.util import logging
-from sphinx.util import SkipProgressMessage, progress_message
+from sphinx.util import progress_message
+from sphinx.util.display import SkipProgressMessage
 from sphinx.util.fileutil import copy_asset, copy_asset_file
 from sphinx.util.matching import Matcher
 from sphinx.util.osutil import ensuredir, make_filename
