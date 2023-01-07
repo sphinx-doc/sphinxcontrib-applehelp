@@ -16,18 +16,22 @@ from os import path
 from subprocess import CalledProcessError, PIPE, STDOUT
 from typing import Any, Dict
 
+import sphinx
 from sphinx.application import Sphinx
 from sphinx.builders.html import StandaloneHTMLBuilder
 from sphinx.errors import SphinxError
 from sphinx.locale import get_translation
 from sphinx.util import logging
-from sphinx.util import progress_message
-from sphinx.util.display import SkipProgressMessage
 from sphinx.util.fileutil import copy_asset, copy_asset_file
 from sphinx.util.matching import Matcher
 from sphinx.util.osutil import ensuredir, make_filename
 
 from sphinxcontrib.applehelp.version import __version__
+
+if sphinx.version_info[:2] >= (6, 1):
+    from sphinx.util.display import SkipProgressMessage, progress_message
+else:
+    from sphinx.util import SkipProgressMessage, progress_message
 
 package_dir = path.abspath(path.dirname(__file__))
 template_dir = path.join(package_dir, 'templates')
