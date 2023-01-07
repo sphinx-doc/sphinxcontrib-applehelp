@@ -29,7 +29,9 @@ from sphinx.util.osutil import ensuredir, make_filename
 if sphinx.version_info[:2] >= (6, 1):
     from sphinx.util.display import SkipProgressMessage, progress_message
 else:
-    from sphinx.util import SkipProgressMessage, progress_message
+    from sphinx.util import (  # type: ignore[attr-defined,no-redef]
+        SkipProgressMessage, progress_message
+    )
 
 __version__ = '1.0.3'
 __version_info__ = (1, 0, 3)
