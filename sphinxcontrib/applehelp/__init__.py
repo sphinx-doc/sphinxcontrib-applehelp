@@ -33,8 +33,8 @@ else:
         SkipProgressMessage, progress_message
     )
 
-__version__ = '1.0.3'
-__version_info__ = (1, 0, 3)
+__version__ = '1.0.4'
+__version_info__ = (1, 0, 4)
 
 package_dir = path.abspath(path.dirname(__file__))
 template_dir = path.join(package_dir, 'templates')
