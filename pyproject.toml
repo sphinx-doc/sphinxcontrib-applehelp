@@ -4,7 +4,7 @@ build-backend = "flit_core.buildapi"
 
 # project metadata
 [project]
-name = "sphinxcontrib.applehelp"
+name = "sphinxcontrib-applehelp"
 description = "sphinxcontrib-applehelp is a Sphinx extension which outputs Apple help books"
 readme = "README.rst"
 urls.Changelog = "https://www.sphinx-doc.org/en/master/changes.html"
