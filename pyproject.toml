@@ -1,10 +1,10 @@
 [build-system]
-requires = ["flit_core>=3.7"]
-build-backend = "flit_core.buildapi"
+requires = ["setuptools>=64"]
+build-backend = "setuptools.build_meta"
 
 # project metadata
 [project]
-name = "sphinxcontrib.applehelp"
+name = "sphinxcontrib-applehelp"
 description = "sphinxcontrib-applehelp is a Sphinx extension which outputs Apple help books"
 readme = "README.rst"
 urls.Changelog = "https://www.sphinx-doc.org/en/master/changes.html"
@@ -56,17 +56,8 @@ lint = [
 name = "Georg Brandl"
 email = "georg@python.org"
 
-[tool.flit.sdist]
-include = [
-    "LICENSE",
-    "CHANGES",
-    # Tests
-    "tests/",
-    "tox.ini",
-]
-exclude = [
-    "doc/_build",
-]
+[tool.setuptools.dynamic]
+version.attr = "sphinxcontrib.applehelp.__version__"
 
 [tool.mypy]
 ignore_missing_imports = true
