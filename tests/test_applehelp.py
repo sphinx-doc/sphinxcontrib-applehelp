@@ -16,22 +16,21 @@ import pytest
 
 def check_structure(outdir):
     contentsdir = outdir / 'Contents'
-    assert contentsdir.isdir()
-    assert (contentsdir / 'Info.plist').isfile()
+    assert contentsdir.is_dir()
+    assert (contentsdir / 'Info.plist').is_file()
 
-    with open(contentsdir / 'Info.plist', 'rb') as f:
-        plist = plistlib.load(f)
+    plist = plistlib.load(contentsdir.joinpath('Info.plist').read_bytes())
     assert plist
     assert len(plist)
     assert plist.get('CFBundleIdentifier', None) == 'org.sphinx-doc.Sphinx.help'
 
-    assert (contentsdir / 'Resources').isdir()
-    assert (contentsdir / 'Resources' / 'en.lproj').isdir()
+    assert (contentsdir / 'Resources').is_dir()
+    assert (contentsdir / 'Resources' / 'en.lproj').is_dir()
 
 
 def check_localization(outdir):
     lprojdir = outdir / 'Contents' / 'Resources' / 'en.lproj'
-    assert (lprojdir / 'localized.txt').isfile()
+    assert (lprojdir / 'localized.txt').is_file()
 
 
 @pytest.mark.sphinx(
