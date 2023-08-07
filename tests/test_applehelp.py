@@ -1,12 +1,4 @@
-"""
-    test_applehelp
-    ~~~~~~~~~~~~~~
-
-    Test for applehelp extension.
-
-    :copyright: Copyright 2007-2019 by the Sphinx team, see AUTHORS.
-    :license: BSD, see LICENSE for details.
-"""
+"""Test for applehelp extension."""
 
 from pathlib import Path
 import plistlib

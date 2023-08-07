@@ -1,12 +1,4 @@
-"""
-    sphinxcontrib.applehelp
-    ~~~~~~~~~~~~~~~~~~~~~~~
-
-    Build Apple help books.
-
-    :copyright: Copyright 2007-2019 by the Sphinx team, see README.
-    :license: BSD, see LICENSE for details.
-"""
+"""Build Apple help books."""
 
 import plistlib
 import shlex
