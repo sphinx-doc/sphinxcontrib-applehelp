@@ -19,7 +19,8 @@ def check_structure(outdir):
     assert contentsdir.is_dir()
     assert (contentsdir / 'Info.plist').is_file()
 
-    plist = plistlib.load(contentsdir.joinpath('Info.plist').read_bytes())
+    with contentsdir.joinpath('Info.plist').open('rb') as f:
+        plist = plistlib.load(f)
     assert plist
     assert len(plist)
     assert plist.get('CFBundleIdentifier', None) == 'org.sphinx-doc.Sphinx.help'
