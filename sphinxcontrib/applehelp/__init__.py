@@ -86,12 +86,12 @@ class AppleHelpBuilder(StandaloneHTMLBuilder):
             raise SphinxError(__('You must set applehelp_bundle_id before '
                                  'building Apple Help output'))
 
-        self.bundle_path = path.join(self.outdir,  # type: ignore
-                                     self.config.applehelp_bundle_name + '.help')
-        self.outdir = path.join(self.bundle_path,
-                                'Contents',
-                                'Resources',
-                                self.config.applehelp_locale + '.lproj')
+        self.bundle_path = self.outdir / (self.config.applehelp_bundle_name + '.help')
+        self.outdir = self.bundle_path.joinpath(
+            'Contents',
+            'Resources',
+            self.config.applehelp_locale + '.lproj',
+        )
 
     def handle_finish(self) -> None:
         super().handle_finish()
