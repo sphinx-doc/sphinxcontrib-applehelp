@@ -14,7 +14,7 @@ import subprocess
 from os import environ
 from os import path
 from subprocess import CalledProcessError, PIPE, STDOUT
-from typing import Any, Dict
+from typing import Any
 
 import sphinx
 from sphinx.application import Sphinx
@@ -233,7 +233,7 @@ class AppleHelpBuilder(StandaloneHTMLBuilder):
                 raise AppleHelpCodeSigningFailed(exc.stdout)
 
 
-def setup(app: Sphinx) -> Dict[str, Any]:
+def setup(app: Sphinx) -> dict[str, Any]:
     app.setup_extension('sphinx.builders.html')
     app.add_builder(AppleHelpBuilder)
     app.add_message_catalog(__name__, path.join(package_dir, 'locales'))
