@@ -8,11 +8,10 @@
     :license: BSD, see LICENSE for details.
 """
 
+from pathlib import Path
 import plistlib
 
 import pytest
-
-from sphinx.testing.path import path
 
 
 def check_structure(outdir):
@@ -40,13 +39,13 @@ def check_localization(outdir):
     confoverrides={'applehelp_bundle_id': 'org.sphinx-doc.Sphinx.help',
                    'applehelp_disable_external_tools': True})
 def test_applehelp_output(app, status, warning):
-    (app.srcdir / 'en.lproj').makedirs()
-    (app.srcdir / 'en.lproj' / 'localized.txt').write_text('')
+    (app.srcdir / 'en.lproj').mkdir(parents=True, exist_ok=True)
+    (app.srcdir / 'en.lproj' / 'localized.txt').touch()
     app.builder.build_all()
 
     # Have to use bundle_path, not outdir, because we alter the latter
     # to point to the lproj directory so that the HTML arrives in the
     # correct location.
-    bundle_path = path(app.builder.bundle_path)
+    bundle_path = Path(app.builder.bundle_path)
     check_structure(bundle_path)
     check_localization(bundle_path)
