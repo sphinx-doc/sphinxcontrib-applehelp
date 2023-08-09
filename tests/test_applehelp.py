@@ -31,8 +31,9 @@ def check_localization(outdir):
     confoverrides={'applehelp_bundle_id': 'org.sphinx-doc.Sphinx.help',
                    'applehelp_disable_external_tools': True})
 def test_applehelp_output(app, status, warning):
-    (app.srcdir / 'en.lproj').mkdir(parents=True, exist_ok=True)
-    (app.srcdir / 'en.lproj' / 'localized.txt').touch()
+    LPROJ_DIR = Path(app.srcdir / 'en.lproj')
+    LPROJ_DIR.mkdir(parents=True, exist_ok=True)
+    LPROJ_DIR.joinpath('localized.txt').touch()
     app.builder.build_all()
 
     # Have to use bundle_path, not outdir, because we alter the latter
