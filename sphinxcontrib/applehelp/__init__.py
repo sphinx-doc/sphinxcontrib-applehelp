@@ -79,7 +79,7 @@ class AppleHelpBuilder(StandaloneHTMLBuilder):
                                  'building Apple Help output'))
 
         self.bundle_path = path.join(self.outdir, self.config.applehelp_bundle_name + '.help')
-        self.outdir = path.join(
+        self.outdir = path.join(  # type: ignore[assignment]
             self.bundle_path,
             'Contents',
             'Resources',
