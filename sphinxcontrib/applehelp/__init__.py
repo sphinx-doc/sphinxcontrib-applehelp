@@ -227,6 +227,7 @@ class AppleHelpBuilder(StandaloneHTMLBuilder):
 
 
 def setup(app: Sphinx) -> dict[str, Any]:
+    app.require_sphinx('5.0')
     app.setup_extension('sphinx.builders.html')
     app.add_builder(AppleHelpBuilder)
     app.add_message_catalog(__name__, path.join(package_dir, 'locales'))
