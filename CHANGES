@@ -1,3 +1,10 @@
+Release 1.0.8 (unreleased)
+==========================
+
+* Remove Sphinx as a required dependency, as circular dependencies may cause
+  failure with package managers that expect a directed acyclic graph (DAG)
+  of dependencies.
+
 Release 1.0.7 (2023-08-14)
 ==========================
 
