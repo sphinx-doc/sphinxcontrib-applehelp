@@ -51,7 +51,7 @@ lint = [
     "docutils-stubs",
 ]
 standalone = [
-  "sphinx > 5",
+  "Sphinx>=5",
 ]
 [[project.authors]]
 name = "Georg Brandl"
