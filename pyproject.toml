@@ -39,6 +39,7 @@ classifiers = [
     "Topic :: Text Processing",
     "Topic :: Utilities",
 ]
+dependencies = []
 dynamic = ["version"]
 
 [project.optional-dependencies]
