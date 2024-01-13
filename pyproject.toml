@@ -54,6 +54,7 @@ lint = [
 standalone = [
     "Sphinx>=5",
 ]
+
 [[project.authors]]
 name = "Georg Brandl"
 email = "georg@python.org"
