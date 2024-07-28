@@ -65,7 +65,7 @@ name = "sphinxcontrib.applehelp"
 [tool.flit.sdist]
 include = [
     "CHANGES.rst",
-    "LICENSE",
+    "LICENCE.rst",
     # Tests
     "tests/",
     "tox.ini",
