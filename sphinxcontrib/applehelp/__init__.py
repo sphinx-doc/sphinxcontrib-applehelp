@@ -1,15 +1,16 @@
 """Build Apple help books."""
 
+from __future__ import annotations
+
 import plistlib
 import shlex
 import subprocess
-from os import environ
-from os import path
-from subprocess import CalledProcessError, PIPE, STDOUT
-from typing import Any
+from os import environ, path
+from pathlib import Path
+from subprocess import PIPE, STDOUT, CalledProcessError
+from typing import TYPE_CHECKING
 
 import sphinx
-from sphinx.application import Sphinx
 from sphinx.builders.html import StandaloneHTMLBuilder
 from sphinx.errors import SphinxError
 from sphinx.locale import get_translation
@@ -18,15 +19,21 @@ from sphinx.util.fileutil import copy_asset, copy_asset_file
 from sphinx.util.matching import Matcher
 from sphinx.util.osutil import ensuredir, make_filename
 
+if TYPE_CHECKING:
+    from typing import Any
+
+    from sphinx.application import Sphinx
+
 if sphinx.version_info[:2] >= (6, 1):
     from sphinx.util.display import SkipProgressMessage, progress_message
 else:
-    from sphinx.util import (  # type: ignore[attr-defined,no-redef]
-        SkipProgressMessage, progress_message
+    from sphinx.util import (  # type: ignore[no-redef]
+        SkipProgressMessage,
+        progress_message,
     )
 
-__version__ = '1.0.8'
-__version_info__ = (1, 0, 8)
+__version__ = '2.0.0'
+__version_info__ = (2, 0, 0)
 
 package_dir = path.abspath(path.dirname(__file__))
 template_dir = path.join(package_dir, 'templates')
@@ -75,16 +82,17 @@ class AppleHelpBuilder(StandaloneHTMLBuilder):
         self.link_suffix = '.html'
 
         if self.config.applehelp_bundle_id is None:
-            raise SphinxError(__('You must set applehelp_bundle_id before '
-                                 'building Apple Help output'))
+            msg = __('You must set applehelp_bundle_id '
+                     'before building Apple Help output')
+            raise SphinxError(msg)
 
         self.bundle_path = path.join(self.outdir, self.config.applehelp_bundle_name + '.help')
-        self.outdir = path.join(  # type: ignore[assignment]
+        self.outdir = type(self.outdir)(Path(
             self.bundle_path,
             'Contents',
             'Resources',
             self.config.applehelp_locale + '.lproj',
-        )
+        ))
 
     def handle_finish(self) -> None:
         super().handle_finish()
@@ -94,7 +102,7 @@ class AppleHelpBuilder(StandaloneHTMLBuilder):
 
     @progress_message(__('copying localized files'))
     def copy_localized_files(self) -> None:
-        source_dir = path.join(self.confdir, self.config.applehelp_locale + '.lproj')  # type: ignore  # NOQA
+        source_dir = path.join(self.confdir, self.config.applehelp_locale + '.lproj')
         target_dir = self.outdir
 
         if path.isdir(source_dir):
@@ -175,14 +183,14 @@ class AppleHelpBuilder(StandaloneHTMLBuilder):
             self.config.applehelp_indexer_path,
             '-Cf',
             path.join(language_dir, 'search.helpindex'),
-            language_dir
+            language_dir,
         ]
 
         if self.config.applehelp_index_anchors is not None:
             args.append('-a')
 
         if self.config.applehelp_min_term_length is not None:
-            args += ['-m', '%s' % self.config.applehelp_min_term_length]
+            args += ['-m', f'{self.config.applehelp_min_term_length}']
 
         if self.config.applehelp_stopwords is not None:
             args += ['-s', self.config.applehelp_stopwords]
@@ -196,10 +204,11 @@ class AppleHelpBuilder(StandaloneHTMLBuilder):
         else:
             try:
                 subprocess.run(args, stdout=PIPE, stderr=STDOUT, check=True)
-            except OSError:
-                raise AppleHelpIndexerFailed(__('Command not found: %s') % args[0])
-            except CalledProcessError as exc:
-                raise AppleHelpIndexerFailed(exc.stdout)
+            except OSError as err:
+                msg = __('Command not found: %s') % args[0]
+                raise AppleHelpIndexerFailed(msg) from err
+            except CalledProcessError as err:
+                raise AppleHelpIndexerFailed(err.stdout) from err
 
     @progress_message(__('signing help book'))
     def do_codesign(self) -> None:
@@ -207,7 +216,7 @@ class AppleHelpBuilder(StandaloneHTMLBuilder):
         args = [
             self.config.applehelp_codesign_path,
             '-s', self.config.applehelp_codesign_identity,
-            '-f'
+            '-f',
         ]
 
         args += self.config.applehelp_codesign_flags
@@ -220,10 +229,11 @@ class AppleHelpBuilder(StandaloneHTMLBuilder):
         else:
             try:
                 subprocess.run(args, stdout=PIPE, stderr=STDOUT, check=True)
-            except OSError:
-                raise AppleHelpCodeSigningFailed(__('Command not found: %s') % args[0])
-            except CalledProcessError as exc:
-                raise AppleHelpCodeSigningFailed(exc.stdout)
+            except OSError as err:
+                msg = __('Command not found: %s') % args[0]
+                raise AppleHelpCodeSigningFailed(msg) from err
+            except CalledProcessError as err:
+                raise AppleHelpCodeSigningFailed(err.stdout) from err
 
 
 def setup(app: Sphinx) -> dict[str, Any]:
@@ -239,7 +249,7 @@ def setup(app: Sphinx) -> dict[str, Any]:
     app.add_config_value('applehelp_bundle_version', '1', 'applehelp')
     app.add_config_value('applehelp_icon', None, 'applehelp', [str])
     app.add_config_value('applehelp_kb_product',
-                         lambda self: '%s-%s' % (make_filename(self.project), self.release),
+                         lambda self: f'{make_filename(self.project)}-{self.release}',
                          'applehelp')
     app.add_config_value('applehelp_kb_url', None, 'applehelp', [str])
     app.add_config_value('applehelp_remote_url', None, 'applehelp', [str])
