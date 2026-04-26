@@ -15,6 +15,7 @@ from sphinx.builders.html import StandaloneHTMLBuilder
 from sphinx.errors import SphinxError
 from sphinx.locale import get_translation
 from sphinx.util import logging
+from sphinx.util.display import SkipProgressMessage, progress_message
 from sphinx.util.fileutil import copy_asset, copy_asset_file
 from sphinx.util.matching import Matcher
 from sphinx.util.osutil import ensuredir, make_filename
@@ -23,14 +24,6 @@ if TYPE_CHECKING:
     from typing import Any
 
     from sphinx.application import Sphinx
-
-if sphinx.version_info[:2] >= (6, 1):
-    from sphinx.util.display import SkipProgressMessage, progress_message
-else:
-    from sphinx.util import (  # type: ignore[no-redef]
-        SkipProgressMessage,
-        progress_message,
-    )
 
 __version__ = '2.0.0'
 __version_info__ = (2, 0, 0)
@@ -174,7 +167,7 @@ class AppleHelpBuilder(StandaloneHTMLBuilder):
             'toc': self.config.master_doc + self.out_suffix,
             'title': self.config.applehelp_title,
         }
-        copy_asset_file(path.join(template_dir, '_access.html_t'), language_dir, context)
+        copy_asset_file(path.join(template_dir, '_access.html.jinja'), language_dir, context)
 
     @progress_message(__('generating help index'))
     def build_helpindex(self, language_dir: str) -> None:
@@ -237,7 +230,7 @@ class AppleHelpBuilder(StandaloneHTMLBuilder):
 
 
 def setup(app: Sphinx) -> dict[str, Any]:
-    app.require_sphinx('5.0')
+    app.require_sphinx('7.4')
     app.setup_extension('sphinx.builders.html')
     app.add_builder(AppleHelpBuilder)
     app.add_message_catalog(__name__, path.join(package_dir, 'locales'))

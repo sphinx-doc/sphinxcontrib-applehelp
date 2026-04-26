@@ -52,7 +52,7 @@ lint = [
     "types-docutils",
 ]
 standalone = [
-    "Sphinx>=5",
+    "Sphinx>=7.4.0",
 ]
 
 [[project.authors]]
